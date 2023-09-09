@@ -5,6 +5,6 @@ const addMarkController = require('../controllers/addMarkController');
 
 const router=express.Router();
 
-router.post('/',addMarkController);
+router.put('/',addMarkController);
 
 module.exports=router
