@@ -1,5 +1,6 @@
 const user = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const passwordValidator = require("password-validator");
 
 const signup = async (req, res) => {
   const salt = 10;
@@ -10,6 +11,30 @@ const signup = async (req, res) => {
   //check if email is exist or not
   if (checkEmail) {
     return res.json({ msg: "Email Already Exist" });
+  }
+
+  const schema = new passwordValidator();
+
+  //strong password validator
+  schema
+    .is()
+    .min(8)
+    .is()
+    .max(50)
+    .has()
+    .uppercase()
+    .has()
+    .lowercase()
+    .is()
+    .digits(2)
+    .has()
+    .not()
+    .spaces();
+
+  if (!schema.validate(password) && password.length < 8) {
+    return res.json({ msg: "Password length must be 8 characters" });
+  } else if (!schema.validate(password)) {
+    return res.json({ msg: "Enter Strong Password" });
   }
 
   //hash tha password
