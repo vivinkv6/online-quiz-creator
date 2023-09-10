@@ -1,7 +1,7 @@
 const user = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const passwordValidator = require("password-validator");
-
+const emailValidator = require("email-validator");
 const signup = async (req, res) => {
   const salt = 10;
   const { email, password } = req.body;
@@ -35,6 +35,11 @@ const signup = async (req, res) => {
     return res.json({ msg: "Password length must be 8 characters" });
   } else if (!schema.validate(password)) {
     return res.json({ msg: "Enter Strong Password" });
+  }
+
+  //email validator
+  if (!emailValidator.validate(email)) {
+    return res.json({ msg: "Enter Valid Email" });
   }
 
   //hash tha password
